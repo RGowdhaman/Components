@@ -5,12 +5,14 @@
  * Time: 1:32 PM
  * To change this template use File | Settings | File Templates.
  */
-package {
+package components{
     import flash.events.MouseEvent;
 
     import mx.collections.ArrayCollection;
 
     import mx.events.FlexMouseEvent;
+
+    import skins.TimeComponentSkin;
 
     import spark.components.Group;
     import spark.components.Image;
@@ -51,7 +53,7 @@ package {
         public var labelText:TextBase;
 
         // in case we want to expose later
-        [Embed(source="assets/time-icon.png")]
+        [Embed(source="../assets/time-icon.png")]
         [Bindable]
         public var iconImage:Class;
 

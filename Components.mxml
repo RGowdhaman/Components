@@ -20,10 +20,10 @@
     </s:states>
     <s:VGroup gap="100" verticalCenter="0" horizontalCenter="0">
 
-        <s:Panel id="test1" title="Test Window 1" skinClass="PanelSkin" width="150">
+        <s:Panel id="test1" title="Test Window 1" skinClass="skins.PanelSkin" width="150">
 
         </s:Panel>
-        <s:Panel id="test2" title="Test Window 2" skinClass="PanelSkin" width="300">
+        <s:Panel id="test2" title="Test Window 2" skinClass="skins.PanelSkin" width="300">
 
         </s:Panel>
     </s:VGroup>
