@@ -3,7 +3,18 @@
              xmlns:s="library://ns.adobe.com/flex/spark"
              xmlns:components="components.*"
              alpha.disabled="0.5"
-             blendMode="normal">
+             blendMode="normal"
+            creationComplete="onCreationComplete(event)">
+    <fx:Script>
+        <![CDATA[
+        import mx.events.FlexEvent;
+        import mx.events.ListEvent;
+
+        public function onCreationComplete(event:FlexEvent):void{
+            funComponent.selectedIndex = 2;
+        }
+        ]]>
+    </fx:Script>
 
     <fx:Declarations>
         <s:ArrayCollection id="myArray">
@@ -77,7 +88,7 @@
              fontWeight="bold"
              fontStyle="italic"/>
     <s:Group top="5" right="5">
-        <components:TimeComponent dataProvider="{myArray}" useIcon="{(hostComponent.id == 'test1')}"/>
+        <components:TimeComponent id="funComponent" dataProvider="{myArray}" useIcon="{(hostComponent.id == 'test1')}"/>
     </s:Group>
 
 

@@ -6,9 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 package components{
+    import flash.display.DisplayObject;
+    import flash.events.Event;
     import flash.events.MouseEvent;
 
     import mx.collections.ArrayCollection;
+    import mx.events.FlexEvent;
 
     import mx.events.FlexMouseEvent;
 
@@ -23,8 +26,10 @@ package components{
     import spark.components.supportClasses.TextBase;
     import spark.events.DropDownEvent;
     import spark.events.IndexChangeEvent;
+    import spark.events.ListEvent;
 
     [Event("open", type="spark.events.DropDownEvent")]
+    [Event(name="change", type="mx.events.ListEvent")]
 
     [SkinState("open")]
 
@@ -125,18 +130,20 @@ package components{
         private function setupTheList(list:List):List {
             list.setStyle("contentBackgroundAlpha", 0);
             list.addEventListener(IndexChangeEvent.CHANGE, onIndexClick);
+
             return list;
         }
 
         protected function onIndexClick(event:IndexChangeEvent):void {
             var currentIndex:int = event.currentTarget.selectedIndex;
             var currentDataItem:Object = event.currentTarget.selectedItem;
-            trace("selected item: ", String(currentDataItem));
+
             _selectedItem = String(currentDataItem);
             _selectedIndex = Number(currentIndex);
             labelText.text = String(currentDataItem);
             icon.toolTip = String(currentDataItem);
             closeDropDown();
+            this.dispatchEvent(new ListEvent(Event.CHANGE));
         }
 
         override protected function commitProperties():void {
@@ -153,13 +160,18 @@ package components{
             if(theList){
                 theList.dataProvider = dataProvider;
             }
+            if(_selectedIndex != -1){
+                theList.selectedIndex = selectedIndex;
+                labelText.text = String(theList.selectedItem);
+                icon.toolTip = String(theList.selectedItem);
+                trace(selectedIndex, _selectedIndex);
+            }
         }
 
         public function openDropDown():void {
             _isOpen = true;
             invalidateSkinState();
             this.dispatchEvent(new DropDownEvent(DropDownEvent.OPEN));
-
         }
 
         public function closeDropDown():void {
@@ -222,7 +234,10 @@ package components{
         }
 
         public function set selectedIndex(value:Number):void {
-            _selectedIndex = value;
+            if (value != _selectedIndex){
+                _selectedIndex = value;
+                invalidateSkinState();
+            }
         }
 
         public function get useIcon():Boolean {
