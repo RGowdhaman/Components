@@ -161,6 +161,7 @@ package components{
                 theList.dataProvider = dataProvider;
             }
             if(_selectedIndex != -1){
+				theList.selectedIndex = -1;
                 theList.selectedIndex = selectedIndex;
                 labelText.text = String(theList.selectedItem);
                 icon.toolTip = String(theList.selectedItem);
