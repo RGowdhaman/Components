@@ -36,8 +36,6 @@ package components{
     [SkinState("over")]
 
     public class TimeComponent extends SkinnableComponent {
-        [SkinPart("false")]
-        public var icon:Image;
 
         [SkinPart("true")]
         public var popup:PopUpAnchor;
@@ -57,18 +55,11 @@ package components{
         [SkinPart("false")]
         public var labelText:TextBase;
 
-        // in case we want to expose later
-        [Embed(source="../assets/time-icon.png")]
-        [Bindable]
-        public var iconImage:Class;
-
         [Bindable]
         public var _dataProvider:ArrayCollection;
 
         private var _isOpen:Boolean = false;
         private var _isOver:Boolean = false;
-
-        private var _useIcon:Boolean;
 
         private var _selectedItem:String = "Please select an item";
         private var _selectedIndex:Number;
@@ -110,21 +101,20 @@ package components{
                 dropDown = this.setupDropDown(Group(dropDown));
             }
             if(instance == labelText){
-                if (!useIcon) {
-                    labelText.visible = true;
-                    labelText.includeInLayout = true;
-                    buttonWidth = 100;
-                }
+	            labelText.visible = true;
+	            labelText.includeInLayout = true;
+	            buttonWidth = 100;
             }
-            if(instance == icon){
-                if(useIcon) {
-                    icon.source = iconImage;
-                    icon.toolTip = selectedItem;
-                    icon.visible = true;
-                    icon.includeInLayout = true;
-                    buttonWidth = 16;
-                }
-            }
+        }
+
+		override protected function commitProperties():void {
+            super.commitProperties();
+            updateLabel();
+            updateTheListDataProvider();
+        }
+
+        override protected function measure():void {
+            super.measure();
         }
 
         private function setupTheList(list:List):List {
@@ -141,19 +131,8 @@ package components{
             _selectedItem = String(currentDataItem);
             _selectedIndex = Number(currentIndex);
             labelText.text = String(currentDataItem);
-            icon.toolTip = String(currentDataItem);
             closeDropDown();
             this.dispatchEvent(new ListEvent(Event.CHANGE));
-        }
-
-        override protected function commitProperties():void {
-            super.commitProperties();
-            updateLabel();
-            updateTheListDataProvider();
-        }
-
-        override protected function measure():void {
-            super.measure();
         }
 
         private function updateTheListDataProvider():void {
@@ -164,8 +143,23 @@ package components{
 				theList.selectedIndex = -1;
                 theList.selectedIndex = selectedIndex;
                 labelText.text = String(theList.selectedItem);
-                icon.toolTip = String(theList.selectedItem);
-                trace(selectedIndex, _selectedIndex);
+
+                var thisComponentTitle:TextLineMetrics = labelText.measureText(labelText.text);
+                var thisComponentTitleWidth:int = int(thisComponentTitle.width);
+                var parentTitleDisplayWidth:int = int((Object(this.parent.parent).titleDisplay.measuredWidth ));
+                var parentComponentWidth:int = int(Object(this.parent.parent.width));
+
+                prepareComponentLabel(parentTitleDisplayWidth, thisComponentTitleWidth, parentComponentWidth);
+            }
+        }
+
+        private function prepareComponentLabel(parentTitleDisplayWidth:int, thisComponentTitleWidth:int, parentComponentWidth:int):void {
+            labelText.width = parentComponentWidth - parentTitleDisplayWidth - 5;
+            labelText.toolTip = String(theList.selectedItem);
+            if ((5 + parentTitleDisplayWidth + thisComponentTitleWidth) > parentComponentWidth) {
+                labelText.maxDisplayedLines = 1;
+            } else {
+                labelText.toolTip = "";
             }
         }
 
@@ -239,14 +233,6 @@ package components{
                 _selectedIndex = value;
                 invalidateSkinState();
             }
-        }
-
-        public function get useIcon():Boolean {
-            return _useIcon;
-        }
-
-        public function set useIcon(value:Boolean):void {
-            _useIcon = value;
         }
     }
 }

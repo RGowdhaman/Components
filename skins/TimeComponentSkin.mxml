@@ -46,12 +46,7 @@
                  height="16"
                  right="0"
                  textAlign="right"/>
-        <s:Image id="icon"
-                 includeInLayout="false"
-                 right="0"
-                 horizontalAlign="right"
-                 width="16" height="16"
-                 visible="false" />
+        
     </s:Group>
 
     <!-- border -->
