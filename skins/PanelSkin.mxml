@@ -21,7 +21,7 @@
             <fx:String>Item 0</fx:String>
             <fx:String>Item 1</fx:String>
             <fx:String>Item 2</fx:String>
-            <fx:String>Item 3</fx:String>
+            <fx:String>A very loonnnng string that is very long</fx:String>
             <fx:String>Item 4</fx:String>
         </s:ArrayCollection>
     </fx:Declarations>
@@ -37,7 +37,7 @@
         [HostComponent("spark.components.Panel")]
     </fx:Metadata>
 
-    <s:BorderContainer color="0xAAAAAA" cornerRadius="7"
+    <s:BorderContainer id="mainContainer" color="0xAAAAAA" cornerRadius="7"
                        width="100%" height="100%">
         <s:Rect width="100%" height="45"
                 topLeftRadiusX="7" topLeftRadiusY="7" topRightRadiusX="7" topRightRadiusY="7"
@@ -82,15 +82,15 @@
     </s:BorderContainer>
 
     <s:Label id="titleDisplay"
-             paddingLeft="15" paddingRight="15" paddingTop="15"
+             paddingLeft="5" paddingRight="5" paddingTop="5"
              color="white"
              fontSize="12"
              fontWeight="bold"
              fontStyle="italic"/>
-    <s:Group top="5" right="5">
-        <components:TimeComponent id="funComponent" dataProvider="{myArray}" useIcon="{(hostComponent.id == 'test1')}"/>
-    </s:Group>
 
+    <components:TimeComponent right="0" id="funComponent" dataProvider="{myArray}"
+                              containerTitleWidth="{titleDisplay.width}"
+                               containerWidth="{mainContainer.width}"/>
 
     <s:Group id="contentGroup">
         <s:layout>

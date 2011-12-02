@@ -9,16 +9,15 @@ package components{
     import flash.display.DisplayObject;
     import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.geom.Rectangle;
+    import flash.text.TextLineMetrics;
 
     import mx.collections.ArrayCollection;
-    import mx.events.FlexEvent;
-
     import mx.events.FlexMouseEvent;
 
     import skins.TimeComponentSkin;
 
     import spark.components.Group;
-    import spark.components.Image;
     import spark.components.List;
     import spark.components.PopUpAnchor;
     import spark.components.VGroup;
@@ -36,7 +35,6 @@ package components{
     [SkinState("over")]
 
     public class TimeComponent extends SkinnableComponent {
-
         [SkinPart("true")]
         public var popup:PopUpAnchor;
 
@@ -52,7 +50,7 @@ package components{
         [SkinPart("true")]
         public var theList:List;
 
-        [SkinPart("false")]
+        [SkinPart("true")]
         public var labelText:TextBase;
 
         [Bindable]
@@ -64,6 +62,8 @@ package components{
         private var _selectedItem:String = "Please select an item";
         private var _selectedIndex:Number;
         private var buttonWidth:Number;
+        private var _containerTitleWidth:Number;
+        private var _containerWidth:Number;
 
         public function TimeComponent() {
             super();
@@ -101,20 +101,10 @@ package components{
                 dropDown = this.setupDropDown(Group(dropDown));
             }
             if(instance == labelText){
-	            labelText.visible = true;
-	            labelText.includeInLayout = true;
-	            buttonWidth = 100;
+                labelText.visible = true;
+                labelText.includeInLayout = true;
+                buttonWidth = 100;
             }
-        }
-
-		override protected function commitProperties():void {
-            super.commitProperties();
-            updateLabel();
-            updateTheListDataProvider();
-        }
-
-        override protected function measure():void {
-            super.measure();
         }
 
         private function setupTheList(list:List):List {
@@ -135,6 +125,16 @@ package components{
             this.dispatchEvent(new ListEvent(Event.CHANGE));
         }
 
+        override protected function commitProperties():void {
+            super.commitProperties();
+            updateLabel();
+            updateTheListDataProvider();
+        }
+
+        override protected function measure():void {
+            super.measure();
+        }
+
         private function updateTheListDataProvider():void {
             if(theList){
                 theList.dataProvider = dataProvider;
@@ -146,14 +146,15 @@ package components{
 
                 var thisComponentTitle:TextLineMetrics = labelText.measureText(labelText.text);
                 var thisComponentTitleWidth:int = int(thisComponentTitle.width);
-                var parentTitleDisplayWidth:int = int((Object(this.parent.parent).titleDisplay.measuredWidth ));
-                var parentComponentWidth:int = int(Object(this.parent.parent.width));
+                var parentTitleDisplayWidth:int = containerTitleWidth;
+                var parentComponentWidth:int = containerWidth;
 
                 prepareComponentLabel(parentTitleDisplayWidth, thisComponentTitleWidth, parentComponentWidth);
             }
         }
 
         private function prepareComponentLabel(parentTitleDisplayWidth:int, thisComponentTitleWidth:int, parentComponentWidth:int):void {
+
             labelText.width = parentComponentWidth - parentTitleDisplayWidth - 5;
             labelText.toolTip = String(theList.selectedItem);
             if ((5 + parentTitleDisplayWidth + thisComponentTitleWidth) > parentComponentWidth) {
@@ -233,6 +234,22 @@ package components{
                 _selectedIndex = value;
                 invalidateSkinState();
             }
+        }
+
+        public function get containerTitleWidth():Number {
+            return _containerTitleWidth;
+        }
+
+        public function set containerTitleWidth(value:Number):void {
+            _containerTitleWidth = value;
+        }
+
+        public function get containerWidth():Number {
+            return _containerWidth;
+        }
+
+        public function set containerWidth(value:Number):void {
+            _containerWidth = value;
         }
     }
 }
