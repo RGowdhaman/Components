@@ -4,13 +4,13 @@
              xmlns:components="components.*"
              alpha.disabled="0.5"
              blendMode="normal"
-            creationComplete="onCreationComplete(event)">
+             creationComplete="onCreationComplete(event)">
     <fx:Script>
         <![CDATA[
         import mx.events.FlexEvent;
         import mx.events.ListEvent;
 
-        public function onCreationComplete(event:FlexEvent):void{
+        public function onCreationComplete(event:FlexEvent):void {
             funComponent.selectedIndex = 2;
         }
         ]]>
@@ -27,10 +27,10 @@
     </fx:Declarations>
 
     <s:states>
-        <s:State name="normal"/>
-        <s:State name="disabled"/>
-        <s:State name="normalWithControlBar"/>
-        <s:State name="disabledWithControlBar"/>
+        <s:State name="normal" />
+        <s:State name="disabled" />
+        <s:State name="normalWithControlBar" />
+        <s:State name="disabledWithControlBar" />
     </s:states>
 
     <fx:Metadata>
@@ -45,9 +45,9 @@
             <s:fill>
                 <s:LinearGradient rotation="90">
                     <s:entries>
-                        <s:GradientEntry color="#4166a5"/>
-                        <s:GradientEntry color="#1d428e"/>
-                        <s:GradientEntry color="#4166a5"/>
+                        <s:GradientEntry color="#4166a5" />
+                        <s:GradientEntry color="#1d428e" />
+                        <s:GradientEntry color="#4166a5" />
                     </s:entries>
                 </s:LinearGradient>
             </s:fill>
@@ -59,8 +59,8 @@
             <s:fill>
                 <s:LinearGradient rotation="90">
                     <s:entries>
-                        <s:GradientEntry color="#f8f8f8"/>
-                        <s:GradientEntry color="#CCCCCC"/>
+                        <s:GradientEntry color="#f8f8f8" />
+                        <s:GradientEntry color="#CCCCCC" />
                     </s:entries>
                 </s:LinearGradient>
             </s:fill>
@@ -73,8 +73,8 @@
             <s:fill>
                 <s:LinearGradient rotation="90">
                     <s:entries>
-                        <s:GradientEntry color="#3f3f3f"/>
-                        <s:GradientEntry color="#a5a5a5"/>
+                        <s:GradientEntry color="#3f3f3f" />
+                        <s:GradientEntry color="#a5a5a5" />
                     </s:entries>
                 </s:LinearGradient>
             </s:fill>
@@ -86,23 +86,23 @@
              color="white"
              fontSize="12"
              fontWeight="bold"
-             fontStyle="italic"/>
+             fontStyle="italic" />
 
-    <components:TimeComponent right="0" id="funComponent" dataProvider="{myArray}"
-                              containerTitleWidth="{titleDisplay.width}"
-                               containerWidth="{mainContainer.width}"/>
+    <components:TimeComponent right="5" top="10" id="funComponent" dataProvider="{myArray}"
+                              containerTitle="{titleDisplay}"
+                              containerWidth="{this.width}" />
 
     <s:Group id="contentGroup">
         <s:layout>
             <s:VerticalLayout paddingTop="55" paddingBottom="10" paddingLeft="15" paddingRight="15"
                               paddingBottom.disabledWithControlBar="55" paddingTop.disabledWithControlBar="55"
-                              paddingBottom.normalWithControlBar="55" paddingTop.normalWithControlBar="55"/>
+                              paddingBottom.normalWithControlBar="55" paddingTop.normalWithControlBar="55" />
         </s:layout>
     </s:Group>
 
     <s:Group id="controlBarGroup" bottom="10">
         <s:layout>
-            <s:HorizontalLayout paddingLeft="5" paddingRight="5"/>
+            <s:HorizontalLayout paddingLeft="5" paddingRight="5" />
         </s:layout>
     </s:Group>
 

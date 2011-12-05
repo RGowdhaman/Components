@@ -1,15 +1,31 @@
 <?xml version="1.0"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
-               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:s="library://ns.adobe.com/flex/spark" xmlns:components="components.*"
                width="100%" height="100%"
                creationComplete="creationCompleteHandler(event)">
 
     <fx:Script>
         <![CDATA[
+        import mx.collections.ArrayCollection;
         import mx.events.FlexEvent;
         protected function creationCompleteHandler(event:FlexEvent):void {
             this.currentState = "normal";
+
+            var ac:ArrayCollection = new ArrayCollection();
+            ac.addItem({label: "name One", name:"name One"});
+            ac.addItem({label: "name Two", name:"name Two", defaultSet:true});
+            ac.addItem({label: "name Three", name:"name Three"});
+            ac.addItem({label: "name Four", name:"name Four"});
+
+
+
+            titledContainer.setListData(ac, ac.getItemAt(1).name, simpleCallback);
         }
+
+        private function simpleCallback():Function {
+            return Function("na");
+        }
+
         ]]>
     </fx:Script>
     <s:states>
@@ -24,6 +40,7 @@
         <s:Panel id="test2" title="Test Window 2" skinClass="skins.PanelSkin" width="300">
 
         </s:Panel>
+        <components:TitledContainer width="500" title="Test 3" id="titledContainer" />
     </s:VGroup>
 
 

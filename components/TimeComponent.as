@@ -6,26 +6,25 @@
  * To change this template use File | Settings | File Templates.
  */
 package components{
-    import flash.display.DisplayObject;
     import flash.events.Event;
     import flash.events.MouseEvent;
-    import flash.geom.Rectangle;
     import flash.text.TextLineMetrics;
 
     import mx.collections.ArrayCollection;
+    import mx.controls.Image;
     import mx.events.FlexMouseEvent;
+    import mx.events.ListEvent;
 
     import skins.TimeComponentSkin;
 
     import spark.components.Group;
+    import spark.components.Label;
     import spark.components.List;
     import spark.components.PopUpAnchor;
     import spark.components.VGroup;
     import spark.components.supportClasses.SkinnableComponent;
-    import spark.components.supportClasses.TextBase;
     import spark.events.DropDownEvent;
     import spark.events.IndexChangeEvent;
-    import spark.events.ListEvent;
 
     [Event("open", type="spark.events.DropDownEvent")]
     [Event(name="change", type="mx.events.ListEvent")]
@@ -51,7 +50,7 @@ package components{
         public var theList:List;
 
         [SkinPart("true")]
-        public var labelText:TextBase;
+        public var labelText:Label;
 
         [Bindable]
         public var _dataProvider:ArrayCollection;
@@ -64,6 +63,9 @@ package components{
         private var buttonWidth:Number;
         private var _containerTitleWidth:Number;
         private var _containerWidth:Number;
+
+        private var _containerTitle:Label;
+        private var _containerHelpIcon:Image;
 
         public function TimeComponent() {
             super();
@@ -107,6 +109,19 @@ package components{
             }
         }
 
+        override protected function partRemoved(partName:String, instance:Object):void {
+            super.partRemoved(partName, instance);
+            if (instance == openButton) {
+                Group(openButton).removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+            }
+            if (instance == theList) {
+                theList.removeEventListener(IndexChangeEvent.CHANGE, onIndexClick);
+            }
+            if(instance == dropDown){
+                Group(dropDown).removeEventListener(FlexMouseEvent.MOUSE_DOWN_OUTSIDE, mouseDownOutsideHandler);
+            }
+        }
+
         private function setupTheList(list:List):List {
             list.setStyle("contentBackgroundAlpha", 0);
             list.addEventListener(IndexChangeEvent.CHANGE, onIndexClick);
@@ -131,37 +146,52 @@ package components{
             updateTheListDataProvider();
         }
 
-        override protected function measure():void {
-            super.measure();
-        }
-
         private function updateTheListDataProvider():void {
             if(theList){
                 theList.dataProvider = dataProvider;
             }
+
             if(_selectedIndex != -1){
 				theList.selectedIndex = -1;
                 theList.selectedIndex = selectedIndex;
                 labelText.text = String(theList.selectedItem);
-
-                var thisComponentTitle:TextLineMetrics = labelText.measureText(labelText.text);
-                var thisComponentTitleWidth:int = int(thisComponentTitle.width);
-                var parentTitleDisplayWidth:int = containerTitleWidth;
-                var parentComponentWidth:int = containerWidth;
-
-                prepareComponentLabel(parentTitleDisplayWidth, thisComponentTitleWidth, parentComponentWidth);
+                prepareComponentLabel();
             }
         }
 
-        private function prepareComponentLabel(parentTitleDisplayWidth:int, thisComponentTitleWidth:int, parentComponentWidth:int):void {
+        private function prepareComponentLabel():void {
+            var thisComponentTitle:TextLineMetrics = labelText.measureText(labelText.text);
+            var thisComponentTitleWidth:Number = Number(thisComponentTitle.width);
+            var parentComponentWidth:Number = containerWidth;
+            var containerTitleWidth:Number = 0;
+            var helpIconWidth:Number;
+            var padding:Number = (containerTitle.getStyle("paddingLeft") + containerTitle.getStyle("paddingLeft"));
 
-            labelText.width = parentComponentWidth - parentTitleDisplayWidth - 5;
-            labelText.toolTip = String(theList.selectedItem);
-            if ((5 + parentTitleDisplayWidth + thisComponentTitleWidth) > parentComponentWidth) {
+
+            if(containerTitle){
+                var lm:TextLineMetrics = containerTitle.measureText(containerTitle.text);
+                containerTitleWidth = lm.width;
+            }
+
+            if(containerHelpIcon){
+                helpIconWidth = containerHelpIcon.width;
+            }
+
+//            trace("title ", containerTitle.text);
+//            trace("parent: ", parentComponentWidth);
+//            trace("container title: ", containerTitleWidth);
+//            trace("component title: ", thisComponentTitleWidth);
+
+
+            if ((thisComponentTitleWidth + containerTitleWidth + padding) < parentComponentWidth) {
+                labelText.width = thisComponentTitleWidth + padding;
+                labelText.toolTip = String(theList.selectedItem);
                 labelText.maxDisplayedLines = 1;
+
             } else {
                 labelText.toolTip = "";
             }
+
         }
 
         public function openDropDown():void {
@@ -179,7 +209,7 @@ package components{
 
         private function updateLabel():void {
             if(labelText){
-                var label:String = _selectedItem;
+                var label:String = selectedItem;
                 theList.selectedIndex = selectedIndex;
                 labelText.text = label;
             }
@@ -242,6 +272,7 @@ package components{
 
         public function set containerTitleWidth(value:Number):void {
             _containerTitleWidth = value;
+            validateNow();
         }
 
         public function get containerWidth():Number {
@@ -250,6 +281,23 @@ package components{
 
         public function set containerWidth(value:Number):void {
             _containerWidth = value;
+            validateNow();
+        }
+
+        public function get containerTitle():Label {
+            return _containerTitle;
+        }
+
+        public function set containerTitle(value:Label):void {
+            _containerTitle = value;
+        }
+
+        public function get containerHelpIcon():Image {
+            return _containerHelpIcon;
+        }
+
+        public function set containerHelpIcon(value:Image):void {
+            _containerHelpIcon = value;
         }
     }
 }
