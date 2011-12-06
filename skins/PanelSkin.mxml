@@ -82,15 +82,17 @@
     </s:BorderContainer>
 
     <s:Label id="titleDisplay"
-             paddingLeft="5" paddingRight="5" paddingTop="5"
+             paddingLeft="5"
+             paddingRight="5"
+             paddingTop="5"
              color="white"
-             fontSize="12"
-             fontWeight="bold"
-             fontStyle="italic" />
-
-    <components:TimeComponent right="5" top="10" id="funComponent" dataProvider="{myArray}"
-                              containerTitle="{titleDisplay}"
-                              containerWidth="{this.width}" />
+             fontSize="12" />
+    <s:HGroup paddingTop="3">
+        <components:TimeComponent id="funComponent"
+                                  dataProvider="{myArray}"
+                                  containerTitle="{titleDisplay}"
+                                  containerWidth="{this.width}" />
+    </s:HGroup>
 
     <s:Group id="contentGroup">
         <s:layout>

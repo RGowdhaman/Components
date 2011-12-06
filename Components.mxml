@@ -28,6 +28,7 @@
 
         ]]>
     </fx:Script>
+
     <s:states>
         <s:State name="loaded"/>
         <s:State name="normal"/>
@@ -40,7 +41,7 @@
         <s:Panel id="test2" title="Test Window 2" skinClass="skins.PanelSkin" width="300">
 
         </s:Panel>
-        <components:TitledContainer width="500" title="Test 3" id="titledContainer" />
+        <components:TitledContainer width="500" title="A very long title to test the width A very long title to test the width"  id="titledContainer" />
     </s:VGroup>
 
 
