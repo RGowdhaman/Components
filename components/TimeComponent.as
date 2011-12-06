@@ -105,6 +105,9 @@ package components{
             if(instance == labelText){
                 labelText.visible = true;
                 labelText.includeInLayout = true;
+
+
+                labelText.verticalCenter = 0;
                 buttonWidth = 100;
             }
         }
@@ -133,8 +136,8 @@ package components{
             var currentIndex:int = event.currentTarget.selectedIndex;
             var currentDataItem:Object = event.currentTarget.selectedItem;
 
-            _selectedItem = String(currentDataItem);
-            _selectedIndex = Number(currentIndex);
+            selectedItem = String(currentDataItem);
+            selectedIndex = Number(currentIndex);
             labelText.text = String(currentDataItem);
             closeDropDown();
             this.dispatchEvent(new ListEvent(Event.CHANGE));
@@ -155,6 +158,7 @@ package components{
 				theList.selectedIndex = -1;
                 theList.selectedIndex = selectedIndex;
                 labelText.text = String(theList.selectedItem);
+
                 prepareComponentLabel();
             }
         }
@@ -167,7 +171,6 @@ package components{
             var helpIconWidth:Number;
             var padding:Number = (containerTitle.getStyle("paddingLeft") + containerTitle.getStyle("paddingLeft"));
 
-
             if(containerTitle){
                 var lm:TextLineMetrics = containerTitle.measureText(containerTitle.text);
                 containerTitleWidth = lm.width;
@@ -177,14 +180,12 @@ package components{
                 helpIconWidth = containerHelpIcon.width;
             }
 
-//            trace("title ", containerTitle.text);
-//            trace("parent: ", parentComponentWidth);
-//            trace("container title: ", containerTitleWidth);
-//            trace("component title: ", thisComponentTitleWidth);
+
 
 
             if ((thisComponentTitleWidth + containerTitleWidth + padding) < parentComponentWidth) {
-                labelText.width = thisComponentTitleWidth + padding;
+                labelText.width = thisComponentTitleWidth + padding + 5;
+                trace(labelText.width);
                 labelText.toolTip = String(theList.selectedItem);
                 labelText.maxDisplayedLines = 1;
 
