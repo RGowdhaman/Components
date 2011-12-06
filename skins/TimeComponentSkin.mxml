@@ -55,12 +55,12 @@
     </s:Rect>
 
     <s:PopUpAnchor id="popup" width="100%"
-                   displayPopUp.normal="false"
-                   displayPopUp.open="true"
-                   left="{hostComponent.width}"
-                   right="0" top="15" bottom="0"
-                   popUpPosition="left"
-                   popUpHeightMatchesAnchorHeight="false">
+	                   displayPopUp.normal="false"
+	                   displayPopUp.open="true"
+	                   right="{openButton.width}"
+	                   top="15" bottom="0"
+	                   popUpPosition="right"
+	                   popUpHeightMatchesAnchorHeight="false">
 
         <s:Group id="dropDown">
             <s:Rect id="background" left="0" right="0" top="0" bottom="0" width="100" height="100" radiusX="5"
